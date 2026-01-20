@@ -88,13 +88,13 @@ const Footer = () => {
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-science-gold flex-shrink-0" />
                 <span className="text-primary-foreground/80 text-sm">
-                  +91 376 2370121
+                  +91 9395135841
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={18} className="text-science-gold flex-shrink-0" />
                 <span className="text-primary-foreground/80 text-sm">
-                  jigyasa@neist.res.in
+                  jigyasacsirneist@gmail.com
                 </span>
               </li>
             </ul>
@@ -109,7 +109,7 @@ const Footer = () => {
             <p>© {currentYear} CSIR-NEIST. All rights reserved.</p>
             <p className="flex items-center gap-2">
               <span>Jigyasa Nodal Officer:</span>
-              <span className="text-primary-foreground">Dr. Scientist Name</span>
+              <span className="text-primary-foreground">Dr. Dipankar Neog</span>
             </p>
           </div>
         </div>
