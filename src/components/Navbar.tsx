@@ -45,7 +45,7 @@ const Navbar = () => {
               />
             </div>
             <div className="hidden sm:block h-8 w-px bg-border/30" />
-            <div className="hidden sm:block bg-transparent rounded p-1">
+            <div className="hidden sm:block bg-white rounded p-1">
               <img 
                 src={neistLogo} 
                 alt="CSIR-NEIST Logo" 
