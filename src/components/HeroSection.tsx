@@ -27,12 +27,12 @@ const HeroSection = () => {
           
           {/* Main Title */}
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-primary-foreground mb-6 animate-fade-in-up animation-delay-100">
-            The Sigma Circle
+            The Maths Club
           </h1>
           
           {/* Subtitle */}
           <p className="text-xl sm:text-2xl lg:text-3xl text-science-gold font-semibold mb-4 animate-fade-in-up animation-delay-200">
-            Maths Club @ CSIR-NEIST
+            @ CSIR-NEIST
           </p>
           
           {/* Description */}
