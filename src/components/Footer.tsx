@@ -64,7 +64,7 @@ const Footer = () => {
                 (link) => (
                   <li key={link}>
                     <a
-                      href="#"
+                      href="https://jigyasa-csir.in/"
                       className="text-primary-foreground/70 hover:text-science-gold transition-colors text-sm"
                     >
                       {link}
