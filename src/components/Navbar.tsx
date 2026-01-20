@@ -53,7 +53,7 @@ const Navbar = () => {
               />
             </div>
             <div className="hidden md:block h-8 w-px bg-border/30" />
-            <div className="hidden md:block bg-white rounded p-1">
+            <div className="bg-white rounded p-1">
               <img 
                 src={jigyasaLogo} 
                 alt="Jigyasa Logo" 
