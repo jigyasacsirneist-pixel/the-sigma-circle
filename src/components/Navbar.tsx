@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import csirLogo from "@/assets/csir-logo.jpg";
+import neistLogo from "@/assets/neist-logo.jpg";
+import jigyasaLogo from "@/assets/jigyasa-logo.png";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -33,18 +36,29 @@ const Navbar = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logos */}
-          <div className="flex items-center gap-3 lg:gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm lg:text-base">CSIR</span>
-              </div>
-              <div className="hidden sm:block h-8 w-px bg-border" />
-              <div className="hidden sm:flex items-center gap-2">
-                <div className="w-8 h-8 lg:w-10 lg:h-10 rounded bg-science-gold flex items-center justify-center">
-                  <span className="text-accent-foreground font-bold text-xs lg:text-sm">जि</span>
-                </div>
-                <span className="text-foreground font-semibold text-sm lg:text-base">Jigyasa</span>
-              </div>
+          <div className="flex items-center gap-2 lg:gap-3">
+            <div className="bg-white rounded p-1">
+              <img 
+                src={csirLogo} 
+                alt="CSIR Logo" 
+                className="h-8 lg:h-11 w-auto object-contain"
+              />
+            </div>
+            <div className="hidden sm:block h-8 w-px bg-border/30" />
+            <div className="hidden sm:block bg-white rounded p-1">
+              <img 
+                src={neistLogo} 
+                alt="CSIR-NEIST Logo" 
+                className="h-8 lg:h-11 w-auto object-contain"
+              />
+            </div>
+            <div className="hidden md:block h-8 w-px bg-border/30" />
+            <div className="hidden md:block bg-white rounded p-1">
+              <img 
+                src={jigyasaLogo} 
+                alt="Jigyasa Logo" 
+                className="h-8 lg:h-11 w-auto object-contain"
+              />
             </div>
           </div>
 
@@ -91,6 +105,12 @@ const Navbar = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden absolute top-full left-0 right-0 bg-background border-b shadow-card">
             <div className="container px-4 py-4 flex flex-col gap-4">
+              {/* Mobile Logos */}
+              <div className="flex items-center justify-center gap-3 pb-3 border-b border-border">
+                <img src={csirLogo} alt="CSIR" className="h-10 w-auto" />
+                <img src={neistLogo} alt="NEIST" className="h-10 w-auto" />
+                <img src={jigyasaLogo} alt="Jigyasa" className="h-10 w-auto" />
+              </div>
               {navLinks.map((link) => (
                 <a
                   key={link.name}

@@ -1,4 +1,7 @@
 import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Youtube } from "lucide-react";
+import csirLogo from "@/assets/csir-logo.jpg";
+import neistLogo from "@/assets/neist-logo.jpg";
+import jigyasaLogo from "@/assets/jigyasa-logo.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -17,16 +20,23 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand Column */}
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-full bg-primary-foreground flex items-center justify-center">
-                <span className="text-primary font-bold text-sm">CSIR</span>
+            {/* Logos Row */}
+            <div className="flex items-center gap-4 mb-6 flex-wrap">
+              <div className="bg-white rounded-lg p-2">
+                <img src={csirLogo} alt="CSIR Logo" className="h-14 w-auto object-contain" />
               </div>
-              <div>
-                <h3 className="font-bold text-lg">CSIR-NEIST</h3>
-                <p className="text-primary-foreground/70 text-sm">
-                  North East Institute of Science & Technology
-                </p>
+              <div className="bg-white rounded-lg p-2">
+                <img src={neistLogo} alt="CSIR-NEIST Logo" className="h-14 w-auto object-contain" />
               </div>
+              <div className="bg-white rounded-lg p-2">
+                <img src={jigyasaLogo} alt="Jigyasa Logo" className="h-14 w-auto object-contain" />
+              </div>
+            </div>
+            <div className="mb-4">
+              <h3 className="font-bold text-lg">CSIR-NEIST</h3>
+              <p className="text-primary-foreground/70 text-sm">
+                North East Institute of Science & Technology
+              </p>
             </div>
             <p className="text-primary-foreground/80 max-w-md mb-6 leading-relaxed">
               The Sigma Circle is a Maths Club initiative under the Jigyasa program, 
