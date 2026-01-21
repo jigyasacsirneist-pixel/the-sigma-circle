@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/bannerhero.png";
+import FloatingMathSymbols from "./FloatingMathSymbols";
 
 const HeroSection = () => {
   return (
@@ -13,6 +14,9 @@ const HeroSection = () => {
       
       {/* Overlay */}
       <div className="absolute inset-0 hero-overlay" />
+      
+      {/* Floating Math Symbols & Grid */}
+      <FloatingMathSymbols />
       
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 lg:px-8 text-center">
