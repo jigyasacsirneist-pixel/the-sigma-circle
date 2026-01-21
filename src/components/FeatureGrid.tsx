@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { FlaskConical, LineChart, Lock } from "lucide-react";
+import InteractiveFeatureCard from "./InteractiveFeatureCard";
 
 const activities = [
   {
@@ -9,6 +10,11 @@ const activities = [
       "Explore the mathematical foundations behind chemistry experiments, biological modeling, and physical sciences conducted at NEIST laboratories.",
     gradient: "from-primary/10 to-csir-blue-light/5",
     iconBg: "bg-primary",
+    puzzle: {
+      question: "If a chemical reaction doubles every 10 minutes, how many times larger is it after 1 hour?",
+      hint: "Think exponentially! 2^n where n = number of 10-min periods",
+      answer: "64 times larger (2⁶ = 64)",
+    },
   },
   {
     icon: LineChart,
@@ -17,6 +23,11 @@ const activities = [
       "Apply mathematical modeling techniques to solve real environmental challenges in Northeast India – from flood prediction to biodiversity analysis.",
     gradient: "from-science-gold/15 to-science-gold/5",
     iconBg: "bg-science-gold",
+    puzzle: {
+      question: "A river rises 2m every hour. If it starts at 5m, when does it reach 15m?",
+      hint: "Linear equation: 5 + 2x = 15",
+      answer: "5 hours (x = 5)",
+    },
   },
   {
     icon: Lock,
@@ -25,6 +36,11 @@ const activities = [
       "Decode the science of secrets. Learn number theory, encryption algorithms, and the mathematics that keeps our digital world secure.",
     gradient: "from-csir-blue-light/10 to-primary/5",
     iconBg: "bg-csir-blue-light",
+    puzzle: {
+      question: "Caesar Cipher: PDWK → ? (shift = 3 backwards)",
+      hint: "P-3=M, D-3=A, W-3=T, K-3=H",
+      answer: "MATH 🔓",
+    },
   },
 ];
 
@@ -63,59 +79,22 @@ const FeatureGrid = () => {
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Discover how mathematics powers scientific innovation at CSIR-NEIST
           </p>
+          <p className="text-sm text-science-gold mt-2">✨ Hover over cards for mini-puzzles!</p>
         </div>
 
-        {/* Bento Grid */}
+        {/* Interactive Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {activities.map((activity, index) => (
-            <div
+            <InteractiveFeatureCard
               key={activity.title}
-              className={`animate-on-scroll group relative bg-background rounded-2xl p-8 shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 overflow-hidden graph-paper border-2 border-primary/10 hover:border-primary/30`}
-              style={{ transitionDelay: `${index * 100}ms` }}
-            >
-              {/* Gradient Background */}
-              <div
-                className={`absolute inset-0 bg-gradient-to-br ${activity.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
-              />
-
-              {/* Content */}
-              <div className="relative z-10">
-                {/* Icon */}
-                <div
-                  className={`w-14 h-14 rounded-xl ${activity.iconBg} flex items-center justify-center mb-6 shadow-button`}
-                >
-                  <activity.icon className="w-7 h-7 text-primary-foreground" />
-                </div>
-
-                {/* Title */}
-                <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
-                  {activity.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-muted-foreground leading-relaxed">
-                  {activity.description}
-                </p>
-
-                {/* Learn More Link */}
-                <div className="mt-6 flex items-center text-primary font-medium text-sm opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span>Learn more</span>
-                  <svg
-                    className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
+              icon={activity.icon}
+              title={activity.title}
+              description={activity.description}
+              gradient={activity.gradient}
+              iconBg={activity.iconBg}
+              puzzle={activity.puzzle}
+              index={index}
+            />
           ))}
         </div>
       </div>
