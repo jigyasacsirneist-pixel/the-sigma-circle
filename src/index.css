@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -143,6 +144,11 @@
 }
 
 @layer utilities {
+  /* Math font utility */
+  .font-math {
+    font-family: 'STIX Two Math', 'Computer Modern', 'Latin Modern Math', serif;
+  }
+
   /* News Ticker Animation */
   @keyframes ticker-scroll {
     0% {
@@ -159,6 +165,98 @@
 
   .animate-ticker:hover {
     animation-play-state: paused;
+  }
+
+  /* Floating Math Symbols Animation */
+  @keyframes float-symbol {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 0.08;
+    }
+    25% {
+      transform: translateY(-20px) rotate(5deg);
+      opacity: 0.15;
+    }
+    50% {
+      transform: translateY(-10px) rotate(-3deg);
+      opacity: 0.1;
+    }
+    75% {
+      transform: translateY(-25px) rotate(3deg);
+      opacity: 0.12;
+    }
+  }
+
+  .animate-float-symbol {
+    animation: float-symbol 20s ease-in-out infinite;
+  }
+
+  @keyframes float-shape {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 0.1;
+    }
+    50% {
+      transform: translateY(-30px) rotate(180deg);
+      opacity: 0.2;
+    }
+  }
+
+  .animate-float-shape {
+    animation: float-shape 25s ease-in-out infinite;
+  }
+
+  /* Sine Wave Animation */
+  @keyframes sine-wave {
+    0% {
+      stroke-dashoffset: 0;
+    }
+    100% {
+      stroke-dashoffset: 100;
+    }
+  }
+
+  .animate-sine-wave {
+    stroke-dasharray: 10 5;
+    animation: sine-wave 3s linear infinite;
+  }
+
+  /* Slow Spin for Sierpinski */
+  .animate-spin-slow {
+    animation: spin 3s linear infinite;
+  }
+
+  /* Button Set Expansion Effect */
+  .btn-set-expand {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-set-expand::before {
+    content: '{ }';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'STIX Two Math', serif;
+    font-size: 1.5rem;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.3s ease;
+  }
+
+  .btn-set-expand:hover::before {
+    opacity: 0.2;
+    transform: scale(1.2);
+  }
+
+  /* Graph Paper Background */
+  .graph-paper {
+    background-image: 
+      linear-gradient(to right, hsl(var(--primary) / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--primary) / 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
   }
 
   /* Fade in animation */

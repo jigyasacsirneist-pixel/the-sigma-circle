@@ -70,7 +70,7 @@ const FeatureGrid = () => {
           {activities.map((activity, index) => (
             <div
               key={activity.title}
-              className={`animate-on-scroll group relative bg-background rounded-2xl p-8 shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 overflow-hidden`}
+              className={`animate-on-scroll group relative bg-background rounded-2xl p-8 shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 overflow-hidden graph-paper border-2 border-primary/10 hover:border-primary/30`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
               {/* Gradient Background */}

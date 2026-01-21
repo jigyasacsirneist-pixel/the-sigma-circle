@@ -18,8 +18,8 @@ const buttonVariants = cva(
         // Hero button variants
         hero: "bg-primary text-primary-foreground hover:bg-csir-blue-light shadow-button hover:shadow-card-hover font-semibold",
         heroOutline: "border-2 border-primary-foreground bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary font-semibold",
-        // Gold accent variant
-        gold: "bg-science-gold text-accent-foreground hover:bg-science-gold-dark font-semibold shadow-button",
+        // Gold accent variant with set expansion effect
+        gold: "bg-science-gold text-accent-foreground hover:bg-science-gold-dark font-semibold shadow-button btn-set-expand hover:shadow-[0_0_20px_hsl(45_100%_50%/0.4)] hover:scale-105",
       },
       size: {
         default: "h-10 px-4 py-2",
