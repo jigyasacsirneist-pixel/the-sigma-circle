@@ -1,12 +1,13 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
-
+import { useIsMobile } from "@/hooks/use-mobile";
 const mathematicians = [
   {
     name: "Srinivasa Ramanujan",
@@ -62,7 +63,28 @@ const mathematicians = [
 
 const MathematiciansCarousel = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const [api, setApi] = useState<CarouselApi>();
   const sectionRef = useRef<HTMLElement>(null);
+  const isMobile = useIsMobile();
+
+  // Auto-scroll for mobile users
+  useEffect(() => {
+    if (!api || !isMobile) return;
+
+    const interval = setInterval(() => {
+      api.scrollNext();
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [api, isMobile]);
+
+  // Handle card click for mobile
+  const handleCardClick = useCallback((index: number) => {
+    if (isMobile) {
+      setExpandedIndex(expandedIndex === index ? null : index);
+    }
+  }, [isMobile, expandedIndex]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -111,58 +133,64 @@ const MathematiciansCarousel = () => {
               align: "start",
               loop: true,
             }}
+            setApi={setApi}
             className="w-full max-w-6xl mx-auto"
           >
             <CarouselContent className="-ml-4">
-              {mathematicians.map((person, index) => (
-                <CarouselItem key={person.name} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                  <div
-                    className={`relative group h-full bg-gradient-to-br ${person.color} rounded-2xl p-6 border-2 ${person.borderColor} transition-all duration-500 hover:scale-105 hover:shadow-card-hover cursor-pointer`}
-                    onMouseEnter={() => setHoveredIndex(index)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                  >
-                    {/* Avatar Circle */}
-                    <div className={`w-20 h-20 rounded-full bg-background border-2 ${person.borderColor} flex items-center justify-center mx-auto mb-4 shadow-card`}>
-                      <span className={`text-3xl font-bold font-math ${person.accentColor}`}>
-                        {person.initial}
-                      </span>
-                    </div>
-
-                    {/* Name & Title */}
-                    <h3 className="text-xl font-bold text-foreground text-center mb-1">
-                      {person.name}
-                    </h3>
-                    <p className="text-sm text-muted-foreground text-center mb-2">
-                      {person.years}
-                    </p>
-                    <p className={`text-sm font-medium ${person.accentColor} text-center mb-4`}>
-                      {person.title}
-                    </p>
-
-                    {/* Quote (appears on hover) */}
+              {mathematicians.map((person, index) => {
+                const isExpanded = isMobile ? expandedIndex === index : hoveredIndex === index;
+                
+                return (
+                  <CarouselItem key={person.name} className="pl-4 md:basis-1/2 lg:basis-1/3">
                     <div
-                      className={`overflow-hidden transition-all duration-500 ${
-                        hoveredIndex === index ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
-                      }`}
+                      className={`relative group h-full bg-gradient-to-br ${person.color} rounded-2xl p-6 border-2 ${person.borderColor} transition-all duration-500 hover:scale-105 hover:shadow-card-hover cursor-pointer`}
+                      onMouseEnter={() => !isMobile && setHoveredIndex(index)}
+                      onMouseLeave={() => !isMobile && setHoveredIndex(null)}
+                      onClick={() => handleCardClick(index)}
                     >
-                      <div className="pt-4 border-t border-border">
-                        <p className="text-sm italic text-muted-foreground text-center">
-                          "{person.quote}"
-                        </p>
+                      {/* Avatar Circle */}
+                      <div className={`w-20 h-20 rounded-full bg-background border-2 ${person.borderColor} flex items-center justify-center mx-auto mb-4 shadow-card`}>
+                        <span className={`text-3xl font-bold font-math ${person.accentColor}`}>
+                          {person.initial}
+                        </span>
+                      </div>
+
+                      {/* Name & Title */}
+                      <h3 className="text-xl font-bold text-foreground text-center mb-1">
+                        {person.name}
+                      </h3>
+                      <p className="text-sm text-muted-foreground text-center mb-2">
+                        {person.years}
+                      </p>
+                      <p className={`text-sm font-medium ${person.accentColor} text-center mb-4`}>
+                        {person.title}
+                      </p>
+
+                      {/* Quote (appears on hover/tap) */}
+                      <div
+                        className={`overflow-hidden transition-all duration-500 ${
+                          isExpanded ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+                        }`}
+                      >
+                        <div className="pt-4 border-t border-border">
+                          <p className="text-sm italic text-muted-foreground text-center">
+                            "{person.quote}"
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Tap/Hover hint */}
+                      <div
+                        className={`text-xs text-muted-foreground/60 text-center mt-2 transition-opacity ${
+                          isExpanded ? "opacity-0" : "opacity-100"
+                        }`}
+                      >
+                        {isMobile ? "Tap for quote" : "Hover for quote"}
                       </div>
                     </div>
-
-                    {/* Hover hint */}
-                    <div
-                      className={`text-xs text-muted-foreground/60 text-center mt-2 transition-opacity ${
-                        hoveredIndex === index ? "opacity-0" : "opacity-100"
-                      }`}
-                    >
-                      Hover for quote
-                    </div>
-                  </div>
-                </CarouselItem>
-              ))}
+                  </CarouselItem>
+                );
+              })}
             </CarouselContent>
             <CarouselPrevious className="hidden md:flex -left-12" />
             <CarouselNext className="hidden md:flex -right-12" />
