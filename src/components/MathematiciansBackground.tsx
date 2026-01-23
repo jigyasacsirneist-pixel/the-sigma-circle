@@ -26,8 +26,8 @@ const mathematicians: Mathematician[] = [
 const MathematiciansBackground = () => {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-primary/80" />
+      {/* Dark Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(210,50%,8%)] via-[hsl(210,40%,12%)] to-[hsl(220,30%,15%)]" />
       
       {/* Animated Grid Pattern */}
       <svg className="absolute inset-0 w-full h-full opacity-10">
