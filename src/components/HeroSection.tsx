@@ -1,20 +1,14 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import heroImage from "@/assets/bannerhero.png";
+import MathematiciansBackground from "./MathematiciansBackground";
 import FloatingMathSymbols from "./FloatingMathSymbols";
 import { ParticleTextEffect } from "@/components/ui/particle-text-effect";
 
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${heroImage})` }}
-      />
-      
-      {/* Overlay */}
-      <div className="absolute inset-0 hero-overlay" />
+      {/* Animated Mathematicians Background */}
+      <MathematiciansBackground />
       
       {/* Floating Math Symbols & Grid */}
       <FloatingMathSymbols />
