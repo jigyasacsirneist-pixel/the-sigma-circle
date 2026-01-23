@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/bannerhero.png";
 import FloatingMathSymbols from "./FloatingMathSymbols";
+import { ParticleTextEffect } from "@/components/ui/particle-text-effect";
 
 const HeroSection = () => {
   return (
@@ -29,10 +30,13 @@ const HeroSection = () => {
             </span>
           </div>
           
-          {/* Main Title */}
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-primary-foreground mb-6 animate-fade-in-up animation-delay-100">
-            The Maths Club
-          </h1>
+          {/* Particle Text Effect */}
+          <div className="mb-6 animate-fade-in-up animation-delay-100">
+            <ParticleTextEffect 
+              words={["MATHS CLUB", "π ∞ Σ", "EXPLORE", "DISCOVER", "CSIR-NEIST"]}
+              className="w-full max-w-[800px] h-[200px] mx-auto"
+            />
+          </div>
           
           {/* Subtitle */}
           <p className="text-xl sm:text-2xl lg:text-3xl text-science-gold font-semibold mb-4 animate-fade-in-up animation-delay-200">
