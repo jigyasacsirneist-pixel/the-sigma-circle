@@ -35,6 +35,7 @@ const InteractiveFeatureCard = ({
     >
       <motion.div
         className="relative w-full h-80 cursor-pointer"
+        onClick={() => setIsFlipped(!isFlipped)}
         onHoverStart={() => setIsFlipped(true)}
         onHoverEnd={() => {
           setIsFlipped(false);
@@ -61,7 +62,7 @@ const InteractiveFeatureCard = ({
             <p className="text-muted-foreground leading-relaxed">{description}</p>
 
             <div className="mt-6 flex items-center text-primary font-medium text-sm">
-              <span>Hover for puzzle</span>
+              <span>Tap for puzzle</span>
               <span className="ml-2 animate-bounce">🧩</span>
             </div>
           </div>
