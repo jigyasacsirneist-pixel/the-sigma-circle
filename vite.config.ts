@@ -14,15 +14,9 @@ export default defineConfig(({ mode }) => ({
   },
    // ── Production preview server ──
   preview: {
-    // Add every hostname that will reach the container.
-    // Replace with your real domain(s); you can also use a RegExp.
-    allowedHosts: [
-      "localhost",
-      "127.0.0.1",
-      "jigyasa.deolang.com",   // ← your production domain
-      // /\\.example\\.com$/   // ← wildcard for sub‑domains
-    ],
+    allowedHosts: ['*'],
   },
+
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {
     alias: {
