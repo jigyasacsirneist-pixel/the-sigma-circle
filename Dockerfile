@@ -1,48 +1,54 @@
-# syntax=docker/dockerfile:1
-ARG NODE_VERSION=22
-FROM node:${NODE_VERSION}-alpine AS builder
+# --------------------------------------------------------------
+# 1️⃣  Builder stage – install all deps (including dev) and build
+# --------------------------------------------------------------
+FROM oven/bun:latest AS builder
 
-# Install required packages to install bun (only in builder)
-RUN apk add --no-cache ca-certificates bash gnupg
+# Set a deterministic working directory
+WORKDIR /app
 
-# Install Bun into /usr/local/bin
-RUN wget -qO- https://bun.sh/install | bash -s -- --prefix /usr/local \
- && ln -s /root/.bun/bin/bun /usr/local/bin/bun
-
-WORKDIR /usr/src/app
-
-# Copy lock and package files first for caching
+# -----------------------------------------------------------------
+# Copy only the lock‑file and package.json first – this gives us a
+# cache layer that only invalidates when dependencies change.
+# -----------------------------------------------------------------
 COPY package.json bun.lock ./
 
-# Install all deps (including dev) for build
+# Install **all** dependencies (dev + prod) because the build step
+# may need dev tools (e.g., Vite, TypeScript, etc.).
 RUN bun install
 
-# Copy source and build
+# -----------------------------------------------------------------
+# Copy the rest of the source code and run the Vite build.
+# -----------------------------------------------------------------
 COPY . .
-RUN bun run build
+RUN bun run build          # <-- assumes you have a "build" script
 
-# Final minimal image
-FROM node:${NODE_VERSION}-alpine AS runtime
+# --------------------------------------------------------------
+# 2️⃣  Runtime stage – minimal image, only production deps + build
+# --------------------------------------------------------------
+FROM oven/bun:latest AS runtime
 
-# Create non-root user
+# Create a non‑root user (safer for production)
 RUN addgroup -S app && adduser -S -G app app
 
-WORKDIR /usr/src/app
-
-# Copy runtime bun binary from builder
-COPY --from=builder /root/.bun /root/.bun
-ENV PATH="/root/.bun/bin:${PATH}"
-
-# Copy only production deps and built output
-COPY --from=builder /usr/src/app/node_modules ./node_modules
-COPY --from=builder /usr/src/app/dist ./dist
-COPY package.json ./
-
-# Use non-root user
+WORKDIR /app
 USER app
 
-# Expose port your app uses
+# -----------------------------------------------------------------
+# Copy only what the production container needs:
+#   • compiled output (dist)
+#   • production‑only node_modules
+#   • package.json (so the app can read its own metadata)
+# -----------------------------------------------------------------
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package.json .
+COPY --from=builder /app/node_modules ./node_modules
+
+# -----------------------------------------------------------------
+# Expose the port your Vite server runs on (default 3000)
+# -----------------------------------------------------------------
 EXPOSE 3000
 
-# Run production start (adjust if your port/file differs)
+# -----------------------------------------------------------------
+# Production start command – Vite’s built‑in server
+# -----------------------------------------------------------------
 CMD ["bun", "vite", "start"]
