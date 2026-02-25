@@ -36,7 +36,7 @@ FROM deps as build
 # Download additional development dependencies before building, as some projects require
 # "devDependencies" to be installed to build. If you don't need this, remove this step.
 RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=bun.lockb,target=bun.lockb \
+    --mount=type=bind,source=bun.lock,target=bun.lock \
     --mount=type=cache,target=/root/.bun \
     bun install
 
