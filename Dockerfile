@@ -25,7 +25,7 @@ FROM base as deps
 # Leverage bind mounts to package.json and bun.lockb to avoid having to copy them
 # into this layer.
 RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=bun.lockb,target=bun.lockb \
+    --mount=type=bind,source=bun.lock,target=bun.lock \
     --mount=type=cache,target=/root/.bun \
     bun install --production
 
