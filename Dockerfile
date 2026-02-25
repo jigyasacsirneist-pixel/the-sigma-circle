@@ -1,75 +1,48 @@
 # syntax=docker/dockerfile:1
+ARG NODE_VERSION=22
+FROM node:${NODE_VERSION}-alpine AS builder
 
-# Comments are provided throughout this file to help you get started.
-# If you need more help, visit the Dockerfile reference guide at
-# https://docs.docker.com/go/dockerfile-reference/
+# Install required packages to install bun (only in builder)
+RUN apk add --no-cache ca-certificates bash gnupg
 
-# Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
+# Install Bun into /usr/local/bin
+RUN wget -qO- https://bun.sh/install | bash -s -- --prefix /usr/local \
+ && ln -s /root/.bun/bin/bun /usr/local/bin/bun
 
-ARG NODE_VERSION=22.20.0
-
-################################################################################
-# Use node image for base image for all stages.
-FROM node:${NODE_VERSION}-alpine as base
-
-# Install bun
-RUN curl https://bun.sh/install | sh
-
-# Set working directory for all build stages.
 WORKDIR /usr/src/app
 
+# Copy lock and package files first for caching
+COPY package.json bun.lock ./
 
-################################################################################
-# Create a stage for installing production dependencies.
-FROM base as deps
+# Install all deps (including dev) for build
+RUN bun install
 
-# Download dependencies as a separate step to take advantage of Docker's caching.
-# Leverage a cache mount to /root/.bun to speed up subsequent builds.
-# Leverage bind mounts to package.json and bun.lockb to avoid having to copy them
-# into this layer.
-RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=bun.lock,target=bun.lock \
-    --mount=type=cache,target=/root/.bun \
-    bun install --production
-
-################################################################################
-# Create a stage for building the application.
-FROM deps as build
-
-# Download additional development dependencies before building, as some projects require
-# "devDependencies" to be installed to build. If you don't need this, remove this step.
-RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=bun.lock,target=bun.lock \
-    --mount=type=cache,target=/root/.bun \
-    bun install
-
-# Copy the rest of the source files into the image.
+# Copy source and build
 COPY . .
-# Run the build script.
 RUN bun run build
 
-################################################################################
-# Create a new stage to run the application with minimal runtime dependencies
-# where the necessary files are copied from the build stage.
-FROM base as final
+# Final minimal image
+FROM node:${NODE_VERSION}-alpine AS runtime
 
-# Use production node environment by default.
-ENV NODE_ENV production
+# Create non-root user
+RUN addgroup -S app && adduser -S -G app app
 
-# Run the application as a non-root user.
-USER node
+WORKDIR /usr/src/app
 
-# Copy package.json so that package manager commands can be used.
-COPY package.json .
+# Copy runtime bun binary from builder
+COPY --from=builder /root/.bun /root/.bun
+ENV PATH="/root/.bun/bin:${PATH}"
 
-# Copy the production dependencies from the deps stage and also
-# the built application from the build stage into the image.
-COPY --from=deps /usr/src/app/node_modules ./node_modules
-COPY --from=build /usr/src/app/dist ./dist
+# Copy only production deps and built output
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app/dist ./dist
+COPY package.json ./
 
+# Use non-root user
+USER app
 
-# Expose the port that the application listens on.
-EXPOSE 3200
+# Expose port your app uses
+EXPOSE 3000
 
-# Run the application.
+# Run production start (adjust if your port/file differs)
 CMD ["bun", "vite", "start"]
