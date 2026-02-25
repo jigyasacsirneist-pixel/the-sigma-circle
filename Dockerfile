@@ -69,4 +69,4 @@ COPY --from=build /usr/src/app/dist ./dist
 EXPOSE 3200
 
 # Run the application.
-CMD bun run src/main.tsx
+CMD bun vite start
