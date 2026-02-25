@@ -46,9 +46,9 @@ COPY --from=builder /app/node_modules ./node_modules
 # -----------------------------------------------------------------
 # Expose the port your Vite server runs on (default 3000)
 # -----------------------------------------------------------------
-EXPOSE 3000
+# The port the container will listen on – can be overridden at run‑time
+ENV PORT=5173
+EXPOSE ${PORT}
 
-# -----------------------------------------------------------------
-# Production start command – Vite’s built‑in server
-# -----------------------------------------------------------------
-CMD ["bun", "vite", "start"]
+# Run Vite’s preview server (static files from ./dist) on the chosen port
+CMD ["bun", "vite", "preview", "--host", "0.0.0.0", "--port", "${PORT}"]
