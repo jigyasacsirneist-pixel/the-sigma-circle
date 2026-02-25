@@ -15,6 +15,7 @@ export default defineConfig(({ mode }) => ({
    // ── Production preview server ──
   preview: {
     allowedHosts: ["*","jigyasa.deolang.com"],
+    fallback: "index.html",
   },
 
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
