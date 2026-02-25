@@ -12,6 +12,9 @@ ARG NODE_VERSION=22.20.0
 # Use node image for base image for all stages.
 FROM node:${NODE_VERSION}-alpine as base
 
+# Install bun
+RUN curl https://bun.sh/install | sh
+
 # Set working directory for all build stages.
 WORKDIR /usr/src/app
 
