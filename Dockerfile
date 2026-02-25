@@ -16,16 +16,16 @@ COPY . .
 RUN bun run build          # produces ./dist
 
 # --------------------------------------------------------------
-# 3️⃣ Install the static server globally (adds a binary to ~/.bun)
-# --------------------------------------------------------------
-RUN bun add -g serve       # installs the `serve` CLI
-
-# --------------------------------------------------------------
 # 4️⃣ Runtime stage – minimal image, only what we need to serve
 # --------------------------------------------------------------
 FROM oven/bun:latest AS runtime
 
 WORKDIR /app
+
+# --------------------------------------------------------------
+# 3️⃣ Install the static server globally (adds a binary to ~/.bun)
+# --------------------------------------------------------------
+RUN bun add -g serve       # installs the `serve` CLI
 
 # Copy built assets
 COPY --from=builder /app/dist ./dist
