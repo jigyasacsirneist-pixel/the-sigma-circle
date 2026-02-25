@@ -28,10 +28,10 @@ RUN bun run build          # <-- assumes you have a "build" script
 FROM oven/bun:latest AS runtime
 
 # Create a non‑root user (safer for production)
-RUN addgroup -S app && adduser -S -G app app
+# RUN addgroup -S app && adduser -S -G app app
 
 WORKDIR /app
-USER app
+# USER app
 
 # -----------------------------------------------------------------
 # Copy only what the production container needs:
