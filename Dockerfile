@@ -1,54 +1,29 @@
-# --------------------------------------------------------------
-# 1️⃣  Builder stage – install all deps (including dev) and build
-# --------------------------------------------------------------
-FROM oven/bun:latest AS builder
+# syntax=docker/dockerfile:1
+FROM oven/bun:latest AS build
 
-# Set a deterministic working directory
 WORKDIR /app
 
-# -----------------------------------------------------------------
-# Copy only the lock‑file and package.json first – this gives us a
-# cache layer that only invalidates when dependencies change.
-# -----------------------------------------------------------------
+# ---- Install dependencies (including dev) ----
 COPY package.json bun.lock ./
-
-# Install **all** dependencies (dev + prod) because the build step
-# may need dev tools (e.g., Vite, TypeScript, etc.).
 RUN bun install
 
-# -----------------------------------------------------------------
-# Copy the rest of the source code and run the Vite build.
-# -----------------------------------------------------------------
+# ---- Copy source and build ----
 COPY . .
-RUN bun run build          # <-- assumes you have a "build" script
+RUN bun run build         
 
-# --------------------------------------------------------------
-# 2️⃣  Runtime stage – minimal image, only production deps + build
-# --------------------------------------------------------------
+# ---- Runtime image (same base, only production artefacts) ----
 FROM oven/bun:latest AS runtime
 
-# Create a non‑root user (safer for production)
-# RUN addgroup -S app && adduser -S -G app app
-
 WORKDIR /app
-# USER app
 
-# -----------------------------------------------------------------
-# Copy only what the production container needs:
-#   • compiled output (dist)
-#   • production‑only node_modules
-#   • package.json (so the app can read its own metadata)
-# -----------------------------------------------------------------
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/package.json .
-COPY --from=builder /app/node_modules ./node_modules
+# Copy only what the container needs at runtime
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/package.json .
+COPY --from=build /app/node_modules ./node_modules
 
-# -----------------------------------------------------------------
-# Expose the port your Vite server runs on (default 3000)
-# -----------------------------------------------------------------
-# The port the container will listen on – can be overridden at run‑time
+# Port the app will listen on (Vite default = 5173)
 ENV PORT=5173
 EXPOSE ${PORT}
 
-# Run Vite’s preview server (static files from ./dist) on the chosen port
-CMD ["bun", "vite", "preview", "--host", "0.0.0.0", "--port", "${PORT}"]
+# Run Vite’s preview server (static files) – wrapped in a shell so logs appear
+CMD ["sh", "-c", "bun vite preview --host 0.0.0.0 --port $PORT"]
