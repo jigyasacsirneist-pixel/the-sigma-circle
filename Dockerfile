@@ -40,4 +40,4 @@ ENV PORT=5173
 EXPOSE ${PORT}
 
 # Run `serve` in SPA mode (`-s`) and bind to all interfaces
-CMD ["sh", "-c", "serve -s ./dist -l tcp://0.0.0.0:${PORT}"]
+CMD ["sh", "-c", "bun serve -s ./dist -l tcp://0.0.0.0:${PORT}"]
