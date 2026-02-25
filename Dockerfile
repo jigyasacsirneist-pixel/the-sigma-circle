@@ -32,9 +32,6 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package.json .
 COPY --from=builder /app/node_modules ./node_modules
 
-# Copy the globally‑installed `serve` binary
-COPY --from=builder /root/.bun/bin/serve /usr/local/bin/serve
-
 # Port the server will listen on (default for `serve` is 3000, we expose 5173)
 ENV PORT=5173
 EXPOSE ${PORT}
