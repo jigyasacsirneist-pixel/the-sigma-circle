@@ -85,10 +85,10 @@ const Navbar = () => {
               asChild
               className={isScrolled ? "" : "border-primary text-primary hover:bg-primary hover:text-primary-foreground"}
             >
-              <Link to="/portal">Login</Link>
+              <Link to="https://quiz.deolang.com/login">Login</Link>
             </Button>
             <Button size="sm" asChild>
-              <Link to="/portal">Register</Link>
+              <Link to="https://quiz.deolang.com/register">Register</Link>
             </Button>
           </div>
 
@@ -123,10 +123,10 @@ const Navbar = () => {
               ))}
               <div className="flex gap-3 pt-2">
                 <Button variant="outline" size="sm" asChild className="flex-1">
-                  <Link to="/portal">Login</Link>
+                  <Link to="https://quiz.deolang.com/login">Login</Link>
                 </Button>
                 <Button size="sm" asChild className="flex-1">
-                  <Link to="/portal">Register</Link>
+                  <Link to="https://quiz.deolang.com/register">Register</Link>
                 </Button>
               </div>
             </div>

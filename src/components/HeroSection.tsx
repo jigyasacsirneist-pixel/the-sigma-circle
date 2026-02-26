@@ -45,10 +45,10 @@ const HeroSection = () => {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up animation-delay-400">
             <Button variant="heroOutline" size="xl" asChild>
-              <Link to="/portal">Login</Link>
+              <Link to="https://quiz.deolang.com/login">Login</Link>
             </Button>
             <Button variant="gold" size="xl" asChild>
-              <Link to="/portal">Register Now</Link>
+              <Link to="https://quiz.deolang.com/register">Register Now</Link>
             </Button>
           </div>
         </div>
